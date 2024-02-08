@@ -1,0 +1,55 @@
+<style>
+  .loader {
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  button {
+    transition: opacity 0.3s;
+  }
+
+  button:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+</style>
+<!--Se importa HTMX-->
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<!--Dentro del botom se importa API
+HX-TRIGGER: pone el estado en el que va responder la peticion. 
+HX-TARGET: es donde se va renderizar el resultado de la peticion
+HX-SWAP: la posicion del elemento donde se va renderizar
+HX-INDICATOR: indica cuando se debe ejecutar el loader se especifica con el nombre de la clase 
+HX-DISABLE-ELT: el boton se desactiva mientras se ejecuta la accion-->
+<button
+  hx-get="https://hn.algolia.com/api/v1/search?tags=front_page"
+  hx-disabled-elt="this"
+  hx-trigger="click"
+  hx-indicator=".loader"
+  hx-target="#results"
+  hx-swap="beforeend"
+>
+  Cargar resultados
+</button>
+
+<span class="htmx-indicator loader"></span>
+
+<ul id="results">
+  <li>Aqui están los resultados.</li>
+</ul>
